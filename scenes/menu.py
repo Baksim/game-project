@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from .components.button import Button
-from . import game_settings, exit
+from . import exit, settings
 
       
 def run(game):
@@ -9,7 +9,7 @@ def run(game):
     while True:
         game.screen.fill(game.colors["main"])
         size_x, size_y = game.screen.get_size()
-        btns = [Button(game, (size_x // 2 - 200, size_y // 2 - 50), (400, 100), "Settings", game_settings),
+        btns = [Button(game, (size_x // 2 - 200, size_y // 2 - 50), (400, 100), "Settings", settings),
                 Button(game, (size_x // 2 - 200, (size_y // 2 - 50) + 100 + size_y // 50), (400, 100), "Exit", exit)
                 ]
         title_rect = pygame.Rect((0, size_y // 60), (size_x, size_y // 10))

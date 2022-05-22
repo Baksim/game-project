@@ -4,13 +4,14 @@
     "login": "None",
     "password": "None",
     "piece_style": "classic",
-    "sound": {
-        "user_music": {},
-        "custom_path": "False",
-        "bgm": "False",
-        "sfx": "False",
-        "bgm_volume": "0.15",
-        "sfx_volume": "0.25",
-        "music_style": "J-Pop"
-    }
+    "keyboard_moves": "False",
+    "custom_path": [
+        "C:\\School programming\\test_chess\\resources\\sound\\music\\Pop",
+        "True"
+    ],
+    "bgm": "True",
+    "sfx": "False",
+    "bgm_volume": 0.15,
+    "sfx_volume": 0.25,
+    "music_style": "J-Pop"
 }
