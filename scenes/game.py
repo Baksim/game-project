@@ -4,6 +4,7 @@ import sys
 from . import splash_screen
 import json
 
+
 class Game:
     def __init__(self, settings):
         pygame.init()
@@ -40,14 +41,14 @@ class Game:
         self.music_list = []
         
     def run(self):
-        if self.settings["bgm"] == "True":
-            self.play_music(self.settings)
         splash_screen.run(self)
         
     def event_handler(self, event):
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+            quit()
+            
         elif event.type == VIDEORESIZE and self.settings["fullscreen"] != "True":
             pygame.display.set_mode((max(event.dict['size'][0], 1300), max(event.dict['size'][1], 850)), RESIZABLE)
             pygame.display.update()
@@ -113,6 +114,17 @@ class Game:
         if save:
             with open("settings\settings.json", 'w') as f:
                 json.dump(self.settings, f, indent=4)
+                
+    def get_engine(self):
+        import chess.engine
+        return chess.engine.SimpleEngine.popen_uci("resources\engine\stockfish_15_win_x64_popcnt\stockfish_15_x64_popcnt.exe")
+
+    def load_svg(self, filename, size):
+        import cairosvg
+        import io
+        new_bites = cairosvg.svg2png(url = filename, scale=(size/45))
+        byte_io = io.BytesIO(new_bites)
+        return pygame.image.load(byte_io)
         
     def coursor(self):
         CURSOR = pygame.image.load('resources\images\cursor.png').convert_alpha()

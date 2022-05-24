@@ -137,11 +137,11 @@ def run(game):
         ),
     Slider(game.screen, 100, 100, 800, 20,
            min=0.01, max=1, step=0.01, 
-           initial=float(new_settings["bgm_volume"]), handleRadius=20
+           initial=float(new_settings["bgm_volume"]), handleRadius=13
            ),
     Slider(game.screen, 100, 100, 800, 20,
            min=0.01, max=1, step=0.01, 
-           initial=float(new_settings["sfx_volume"]), handleRadius=20
+           initial=float(new_settings["sfx_volume"]), handleRadius=13
            ),
     Dropdown(
             game.screen, 120, 10, 170, 80, name=music_name,
