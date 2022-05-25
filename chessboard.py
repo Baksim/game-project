@@ -1,9 +1,12 @@
 import chess
 import chess.engine
+import subprocess
 
 
 board=chess.Board()
-engine = chess.engine.SimpleEngine.popen_uci("resources\engine\stockfish_15_win_x64_popcnt\stockfish_15_x64_popcnt.exe")
+engine = chess.engine.SimpleEngine.popen_uci("resources\engine\stockfish_15_win_x64_popcnt\stockfish_15_x64_popcnt.exe",
+                                             shell=False, creationflags=subprocess.CREATE_NO_WINDOW,
+                                             startupinfo=subprocess.STARTUPINFO(dwFlags=subprocess.STARTF_USESHOWWINDOW))
 lm = board.legal_moves
 print(board)
 player_turn = True

@@ -6,13 +6,14 @@ import json
 
 
 class Game:
-    def __init__(self, settings):
+    def __init__(self, settings, session):
         pygame.init()
         pygame.display.set_caption('Chess Multiplayer')
         pygame_icon = pygame.image.load('resources\images\icon.png')
         pygame.display.set_icon(pygame_icon)
         pygame.mouse.set_visible(False)
-        
+
+        self.session_id = session
         self.settings = settings
         if settings["fullscreen"] == "True":
             self.screen = pygame.display.set_mode(tuple(map(int, settings["resolution"].split(', '))), pygame.FULLSCREEN)

@@ -3,8 +3,14 @@ import customtkinter as ctk
 from email_validator import validate_email, EmailNotValidError
 import requests
 import json
+from scenes import game
 
-session = None
+def go_to_game(controller, session):
+    with open('settings\settings.json') as json_file:
+        settings = json.load(json_file)
+    g = game.Game(settings, session)
+    controller.destroy()
+    g.run()
 
 class AuthApp(ctk.CTk):
     def __init__(self, *args, **kwargs):
@@ -12,7 +18,7 @@ class AuthApp(ctk.CTk):
         self.geometry('400x350')
         self.update()
 
-        container = ctk.CTkFrame(self, width=self.winfo_width(), height=self.winfo_height())
+        container = ctk.CTkFrame(self)
         container.pack(fill="both", expand=True)
 
         self.frames = {}
@@ -31,13 +37,14 @@ class AuthApp(ctk.CTk):
 
 
 class StartPage(ctk.CTkFrame):
+
     def __init__(self, parent, controller):
-        ctk.CTkFrame.__init__(self, parent, width=parent.width, height=parent.height)
+        ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
         ctk.CTkLabel(self, text="User Manager").grid(row=0, column=0, sticky='ew', pady=7)
         logbtn = ctk.CTkButton(self, text="Log in", command=lambda: controller.show_frame("LoginPage"))
         regbtn = ctk.CTkButton(self, text="Register", command=lambda: controller.show_frame("RegisterPage"))
-        gstbtn = ctk.CTkButton(self, text="Continue as guest", command=lambda: print('boo'))
+        gstbtn = ctk.CTkButton(self, text="Continue as guest", command=lambda: go_to_game(controller, "Guest"))
         logbtn.grid(row=1, column=0, pady=3)
         regbtn.grid(row=2, column=0, pady=3)
         gstbtn.grid(row=3, column=0, pady=3)
@@ -46,7 +53,7 @@ class StartPage(ctk.CTkFrame):
 
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
-        ctk.CTkFrame.__init__(self, parent, width=parent.width, height=parent.height)
+        ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
         ctk.CTkLabel(self, text="Login").grid(row=0, column=0, columnspan=2, sticky='ew')
         self.warning = ctk.CTkLabel(self, text="")
@@ -66,7 +73,6 @@ class LoginPage(ctk.CTkFrame):
         goback.grid(row=5, column=1, sticky='e')
 
     def login(self, controller):
-        global session
         data = {'email': self.email.get(),
                 'password': self.pswd.get()}
         if data.get('email') != '' and data.get('password') != '':
@@ -77,7 +83,7 @@ class LoginPage(ctk.CTkFrame):
                 if self.checkbox.get() == "on":
                     with open('settings\session.json', 'w') as outfile:
                         json.dump(response, outfile, indent=4)
-                controller.destroy()
+                go_to_game(controller, session)
             except EmailNotValidError as e:
                 self.warning.config(text="Invalid email address.")
         else:
@@ -86,7 +92,7 @@ class LoginPage(ctk.CTkFrame):
 
 class RegisterPage(ctk.CTkFrame):
     def __init__(self, parent, controller):
-        ctk.CTkFrame.__init__(self, parent, width=parent.width, height=parent.height)
+        ctk.CTkFrame.__init__(self, parent)
         self.controller = controller
         ctk.CTkLabel(self, text="Register").grid(row=0, column=0, columnspan=2, sticky='ew')
         self.warning = ctk.CTkLabel(self, text="")
@@ -127,6 +133,6 @@ class RegisterPage(ctk.CTkFrame):
         else:
             self.warning.config(text="Please fill out the fields.")
 
-if __name__ == "__main__":
-    app = AuthApp()
-    app.mainloop()
+# if __name__ == "__main__":
+#     app = AuthApp()
+#     app.mainloop()
