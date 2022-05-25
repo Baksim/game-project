@@ -3,15 +3,15 @@
     "resolution": "1920, 1080",
     "login": "None",
     "password": "None",
-    "piece_style": "Africa",
+    "piece_style": "Fairytale",
     "keyboard_moves": "False",
     "custom_path": [
         "C:\\School programming\\test_chess\\resources\\sound\\music\\Pop",
         "False"
     ],
-    "bgm": "False",
+    "bgm": "True",
     "sfx": "True",
     "bgm_volume": 0.03,
     "sfx_volume": 0.25,
-    "music_style": "Classical"
+    "music_style": "J-Pop"
 }

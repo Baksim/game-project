@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from .components.button import Button
 from .components.chessboard import CBoard
+from .components.chessboard_drawer import ChessboardDrawer
 import pygame_widgets
 from pygame_widgets.textbox import TextBox
 import chess
@@ -26,14 +27,14 @@ def draw_board(game, rec, rects, is_white):
             color = not color
         color = not color
     
-def draw_pices(g, cboard, rects, imgs):
+def draw_pices(game, cboard, rects, imgs):
     board_fields = cboard.get_board()
     for let in board_fields:
         for i in range(1, 9):
             if board_fields[let][i][1] == "w":
-                g.screen.blit(imgs["w"][board_fields[let][i][0]], rects[let][i - 1].topleft)
+                game.screen.blit(imgs["w"][board_fields[let][i][0]], rects[let][i - 1].topleft)
             elif board_fields[let][i][1] == "b":
-                g.screen.blit(imgs["b"][board_fields[let][i][0]], rects[let][i - 1].topleft)
+                game.screen.blit(imgs["b"][board_fields[let][i][0]], rects[let][i - 1].topleft)
                 
 
 def get_let(board, is_white, x, b_keys):    
@@ -77,11 +78,11 @@ def run(game, difficulty, is_white):
     player_turn = is_white
     board_rect = pygame.Rect((size_x // 2 - (size_y // 2 - int(size_y*0.1)), int(size_y*0.1)), (int(size_y*0.8), int(size_y*0.8)))
     under_board_rect = pygame.Rect((board_rect.x - 20, board_rect.y - 20), (board_rect.width + 40, board_rect.height + 40))
-    let  = get_let(board_rect, is_white, pygame.mouse.get_pos()[0], list(fields.keys()))
-    imgs = game.load_images_vsbot(board_rect.width // 8)
-    draw_board(game, board_rect, fields, is_white)
-    draw_pices(game, cboard, fields, imgs)
+    cd = ChessboardDrawer(game, board_rect, is_white)
+    cd.draw_board(fields)
+    cd.draw_pices(cboard, fields)
     player_move = ""
+    
     
     while running:
         for event in pygame.event.get():
@@ -92,22 +93,19 @@ def run(game, difficulty, is_white):
                 if event.key == pygame.K_ESCAPE:
                     running = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                pos = pygame.mouse.get_pos()
                 if let and num and (let + str(num) != player_move) and player_turn:
                     player_move += let + str(num)
             if event.type == VIDEORESIZE or event.type == VIDEOEXPOSE:
-                imgs = game.load_images_vsbot(board_rect.width // 8)
+                size_x, size_y = game.screen.get_size() 
+                board_rect = pygame.Rect((size_x // 2 - (size_y // 2 - int(size_y*0.1)), int(size_y*0.1)), (int(size_y*0.8), int(size_y*0.8)))
+                under_board_rect = pygame.Rect((board_rect.x - 20, board_rect.y - 20), (board_rect.width + 40, board_rect.height + 40))
+                cd.set_rect(board_rect)
                     
         game.screen.fill(game.colors["main"])
-        size_x, size_y = game.screen.get_size() 
-        under_board_rect = pygame.Rect((board_rect.x - 20, board_rect.y - 20), (board_rect.width + 40, board_rect.height + 40))
-        board_rect = pygame.Rect((size_x // 2 - (size_y // 2 - int(size_y*0.1)), int(size_y*0.1)), (int(size_y*0.8), int(size_y*0.8)))
         pygame.draw.rect(game.screen, game.colors["gray"], under_board_rect)
         pygame_widgets.update(pygame.event.get())
         
         if player_turn:
-            if len(player_move) == 2:
-                fields[player_move[0]][int(player_move[1]) - 1]
             if len(player_move) == 4:
                 player_move = chess.Move.from_uci(player_move)
                 if player_move in board.legal_moves:
@@ -121,9 +119,11 @@ def run(game, difficulty, is_white):
             board.push(result.move)
             cboard.push(str(result.move))
             player_turn = not player_turn
-        draw_board(game, board_rect, fields, is_white)
+            
+        cd.draw_board(fields)
         if len(player_move) == 2 and player_turn:
             pygame.draw.rect(game.screen, game.colors["accent"], fields[player_move[0]][int(player_move[1]) - 1])
-        draw_pices(game, cboard, fields, imgs)
+        cd.draw_pices(cboard, fields)
+        
         game.coursor()
         pygame.display.update()
