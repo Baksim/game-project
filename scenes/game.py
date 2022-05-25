@@ -47,7 +47,6 @@ class Game:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-            quit()
             
         elif event.type == VIDEORESIZE and self.settings["fullscreen"] != "True":
             pygame.display.set_mode((max(event.dict['size'][0], 1300), max(event.dict['size'][1], 850)), RESIZABLE)
@@ -125,7 +124,17 @@ class Game:
         new_bites = cairosvg.svg2png(url = filename, scale=(size/45))
         byte_io = io.BytesIO(new_bites)
         return pygame.image.load(byte_io)
+    
+    def load_images_vsbot(self, size):
+        from os import listdir, path
+        imgs = {"w": {}, "b": {}}
+        for f in listdir("resources\\images\\pieces\\white\\" + self.settings["piece_style"]):
+            imgs["w"][f[0]] = self.load_svg(("resources\\images\\pieces\\white\\" + self.settings["piece_style"] + "\\" + f), size)
+            imgs["b"][f[0]] = self.load_svg(("resources\\images\\pieces\\black\\" + self.settings["piece_style"] + "\\" + f), size)
         
+        return imgs
+            
+            
     def coursor(self):
         CURSOR = pygame.image.load('resources\images\cursor.png').convert_alpha()
         if pygame.mouse.get_focused() != 0:
