@@ -18,7 +18,15 @@ class AuthApp(ctk.CTk):
         self.title("User Manager")
         ctk.set_default_color_theme("settings\\launcher_style.json")
         self.iconbitmap("resources\\images\\ctkicon.ico")
-        self.geometry('400x350')
+        ctk.set_appearance_mode("light")
+        w = 400
+        h = 350
+        ws = self.winfo_screenwidth()
+        hs = self.winfo_screenheight()
+        x = (ws/2) - (w/2)
+        y = (hs/2) - (h/2)
+        self.geometry('%dx%d+%d+%d' % (w, h, x, y))
+        self.resizable(False, False)
         self.update()
 
         container = ctk.CTkFrame(self)
