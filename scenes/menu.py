@@ -9,7 +9,11 @@ def run(game):
     while True:
         game.screen.fill(game.colors["main"])
         size_x, size_y = game.screen.get_size()
-        btns = [Button(game, (size_x // 2 - 200, size_y // 2.5 - 50), (400, 100), "Play", game_mode),
+        if game.session_id != "Guest":
+            logout_btn = Button(game, (size_x - 350, size_y - 130), (300, 75), "Logout", exit)
+            logout_btn.draw()
+        btns = [
+                Button(game, (size_x // 2 - 200, size_y // 2.5 - 50), (400, 100), "Play", game_mode),
                 Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 100 + size_y // 50), (400, 100), "Settings", settings),
                 Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 200 + size_y // 25), (400, 100), "Exit", exit)
                 ]
@@ -19,11 +23,15 @@ def run(game):
         game.screen.blit(title, title.get_rect(center=(title_rect.center)))
         for btn in btns:
             btn.draw()
-        game.coursor()
+        
         for event in pygame.event.get():
             game.event_handler(event)
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 pos = pygame.mouse.get_pos()
                 for btn in btns:
                     btn.redirect(pos)
+                if game.session_id != "Guest" and logout_btn.rect.collidepoint(pos):
+                    game.logout()
+                    
+        game.coursor()
         pygame.display.update()    
