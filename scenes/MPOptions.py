@@ -24,7 +24,7 @@ def run(game):
         onClickParams=(game, True)
 )
     join_room_filed = TextBox(game.screen, 500, 100, 800, 50, font=game.fonts["small_text"], fontSize=50, textColour=(0, 0, 0),
-                  onSubmit=start_room, onSubmitParams=(game, True), radius=20, borderThickness=5)
+                  onSubmit=start_room, onSubmitParams=(game, True), radius=20, borderThickness=5, placeholderText="Room's Id to join")
     matchmaking_btn = pwb(game.screen, 100, 100, 400, 50,  
         text='Start matchmaking',
         font=game.fonts["small_text"],
