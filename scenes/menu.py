@@ -5,7 +5,7 @@ from . import exit, settings, game_mode
 
       
 def run(game):
-    title = game.fonts["header"].render("Chess Multiplayer", True, (0, 0, 0))
+    title = game.fonts["header"].render("Chess Multiplayer", True, (71, 32, 24))
     while True:
         game.screen.fill(game.colors["main"])
         size_x, size_y = game.screen.get_size()

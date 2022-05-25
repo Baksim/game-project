@@ -42,7 +42,7 @@ def run(game):
             )
         
     running = True
-    title = game.fonts["header"].render("Settings", True, (0, 0, 0))
+    title = game.fonts["header"].render("Settings", True, (71, 32, 24))
     new_settings = game.settings.copy()
     old_settings = game.settings.copy()
     custom_music_path = [new_settings["custom_path"][0].split("\\")[-1], new_settings["custom_path"][0]] if new_settings["custom_path"][0] != "False" else None
@@ -171,8 +171,8 @@ def run(game):
         
         save_rect = pygame.Rect((0, 7 * size_y // 60), (size_x // 4, 100))
         cancel_rect = pygame.Rect((0, 7 * size_y // 60 + 100), (size_x // 4, 100))
-        pygame.draw.rect(game.screen, game.colors["secondary"], save_rect)
-        pygame.draw.rect(game.screen, game.colors["secondary"], cancel_rect)
+        pygame.draw.rect(game.screen, game.colors["button_bg"], save_rect)
+        pygame.draw.rect(game.screen, game.colors["button_bg"], cancel_rect)
         line_points = [(0, 7 * size_y // 60),
                        (size_x // 4, 7 * size_y // 60),
                        (size_x // 4, 7 * size_y // 60 + 100),
@@ -258,14 +258,14 @@ def run(game):
             
         
         if save_rect.collidepoint(pygame.mouse.get_pos()):
-            text_save = game.fonts["btn"].render("Save", True, game.colors["green"])
+            text_save = game.fonts["btn"].render("Save", True, game.colors["red"])
         else:
-            text_save = game.fonts["btn"].render("Save", True, (0, 0, 0))
+            text_save = game.fonts["btn"].render("Save", True, game.colors["button_text"])
         game.screen.blit(text_save, text_save.get_rect(center=(save_rect.center)))
         if cancel_rect.collidepoint(pygame.mouse.get_pos()):
-            text_cancel = game.fonts["btn"].render("Cancel", True, game.colors["strong_accent"])
+            text_cancel = game.fonts["btn"].render("Cancel", True, game.colors["red"])
         else:
-            text_cancel = game.fonts["btn"].render("Cancel", True, game.colors["accent"])
+            text_cancel = game.fonts["btn"].render("Cancel", True, game.colors["button_text"])
         game.screen.blit(text_cancel, text_cancel.get_rect(center=(cancel_rect.center)))
         
         for event in events:

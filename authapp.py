@@ -6,7 +6,7 @@ import json
 from scenes import game
 
 def go_to_game(controller, session):
-    with open('settings\settings.json') as json_file:
+    with open('settings\\settings.json') as json_file:
         settings = json.load(json_file)
     g = game.Game(settings, session)
     controller.destroy()
@@ -15,6 +15,9 @@ def go_to_game(controller, session):
 class AuthApp(ctk.CTk):
     def __init__(self, *args, **kwargs):
         ctk.CTk.__init__(self, *args, **kwargs)
+        self.title("User Manager")
+        ctk.set_default_color_theme("settings\\launcher_style.json")
+        self.iconbitmap("resources\\images\\ctkicon.ico")
         self.geometry('400x350')
         self.update()
 

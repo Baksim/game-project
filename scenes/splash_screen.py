@@ -5,7 +5,7 @@ from pygame.locals import *
 
 
 def run(game):
-    title = game.fonts["title"].render("(Not) Friends Inc.", True, (0, 0, 0))
+    title = game.fonts["title"].render("CRINGEMASTERS Inc.", True, (71, 32, 24))
     start = time.time()
     while time.time() - start < 4:
         for event in pygame.event.get():

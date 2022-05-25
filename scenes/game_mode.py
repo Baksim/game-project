@@ -5,7 +5,7 @@ from . import settings, menu, VSAIOptions
 
       
 def run(game):
-    title = game.fonts["header"].render("Chess Multiplayer", True, (0, 0, 0))
+    title = game.fonts["header"].render("Chess Multiplayer", True, (71, 32, 24))
     running = True
     while running:
         game.screen.fill(game.colors["main"])

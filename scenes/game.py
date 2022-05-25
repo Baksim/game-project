@@ -23,20 +23,24 @@ class Game:
         self.fonts = { "title": pygame.font.Font("./resources/fonts/title.ttf", 60),
                        "header": pygame.font.Font("./resources/fonts/title.ttf", 50),
                        "btn": pygame.font.Font("./resources/fonts/btn.ttf", 40),
-                       "text":pygame.font.Font("./resources/fonts/text.ttf", 30),
-                       "small_text":pygame.font.Font("./resources/fonts/text.ttf", 25)
+                       "text": pygame.font.Font("./resources/fonts/text.ttf", 30),
+                       "small_text": pygame.font.Font("./resources/fonts/text.ttf", 25)
                       }
         
         
         self.colors = {
-            "main":             (234, 231, 220),
-            "secondary":        (216, 195, 165),
+            "main":             (234, 232, 220),
+            "secondary":        (228, 213, 191),
             "tertiary":         (142, 141, 138),
             "accent":           (233, 128, 116),
             "strong_accent":    (232, 90, 79),
             "red":              (139, 0, 0),
             "gray":             (169, 169, 169),
-            "green":            (39, 174, 96)
+            "green":            (39, 174, 96),
+            "button_border":    (185, 113, 98),
+            "button_bg":        (244, 214, 161),
+            "button_text":      (106, 50, 50),
+            "button_hover":     (237, 175, 120)
         }
         
         self.music_list = []
@@ -97,7 +101,6 @@ class Game:
     def reload_music(self):
         pygame.mixer.music.queue (self.music_list[0])
         self.music_list.append(self.music_list.pop(0))
-        
         
     def apply_settings(self, new_settings, music=None, save=False):
         if new_settings["fullscreen"] != self.settings["fullscreen"] or (self.settings["fullscreen"] == "True" and self.settings["resolution"] != new_settings["resolution"]):

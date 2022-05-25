@@ -11,12 +11,12 @@ class Button:
     def draw(self):
         size_x, size_y = self.game.screen.get_size()
         pos = pygame.mouse.get_pos()
-        pygame.draw.rect(self.game.screen, self.game.colors["tertiary"], self.second_rect, 0, 10)
-        pygame.draw.rect(self.game.screen, self.game.colors["secondary"], self.rect, 0, 10)
+        pygame.draw.rect(self.game.screen, self.game.colors["button_border"], self.second_rect, 0, 10)
+        pygame.draw.rect(self.game.screen, self.game.colors["button_bg"], self.rect, 0, 10)
         if self.rect.collidepoint(pos[0], pos[1]):
             text = self.game.fonts["btn"].render(self.text, True, self.game.colors["red"])
         else:
-            text = self.game.fonts["btn"].render(self.text, True, (0, 0, 0))
+            text = self.game.fonts["btn"].render(self.text, True, self.game.colors["button_text"])
         self.game.screen.blit(text, text.get_rect(center=(self.rect.center)))
     def redirect(self, pos):
         if self.rect.collidepoint(pos):
