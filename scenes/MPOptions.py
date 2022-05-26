@@ -18,9 +18,10 @@ def run(game):
         onClick=room_game.run,
         onClickParams=(game, None)
     )
-    join_room_filed = TextBox(game.screen, 500, 100, 800, 50, font=game.fonts["small_text"], fontSize=50, textColour=(0, 0, 0),
-                  onSubmit=room_game.run, radius=20, borderThickness=5)
-
+    def go_to_room_game(game):
+        room_game.run(game, join_room_filed.getText())
+    join_room_filed = TextBox(game.screen, 500, 100, 800, 50, font=game.fonts["readable"], fontSize=50, textColour=(0, 0, 0),
+                  onSubmit=go_to_room_game, onSubmitParams=[game], radius=20, borderThickness=5)
     matchmaking_btn = pwb(game.screen, 100, 100, 400, 50,
         text='Start matchmaking',
         font=game.fonts["small_text"],
@@ -60,7 +61,7 @@ def run(game):
                 matchmaking_btn.setX(int(size_x // 2 - matchmaking_btn.getWidth() // 2))
                 matchmaking_btn.setY(int(join_room_filed.getY() + (join_room_filed.getHeight() + 30)))
 
-        join_room_filed.onSubmitParams = (game, join_room_filed.getText())
+        fill = join_room_filed.getText()
         game.screen.fill(game.colors["main"])
         pygame_widgets.update(events)
         back_btn = Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 400 + size_y // (50 / 3)), (400, 75), "Back ", game_mode)

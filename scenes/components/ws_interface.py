@@ -20,6 +20,7 @@ class WsInterface:
 
     def init_game(self):
         self.player_color = chess.WHITE
+        self.turn = True
         event = {"type": "init", "session_id": self.session_id}
         self.ws.send(json.dumps(event))
 

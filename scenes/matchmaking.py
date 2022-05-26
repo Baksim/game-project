@@ -119,11 +119,11 @@ def run(game):
             if ws.outcome[0] == "win":
                 winner = ws.outcome[1]
                 if (ws.player_color and winner) or (not ws.player_color and not winner):
-                    outcome = "win"
+                    outcome = "Victory"
                 else:
-                    outcome = "lose"
+                    outcome = "Defeat"
             else:
-                outcome = "draw"
+                outcome = "Draw"
             running = False
             print(ws.outcome)
             print(outcome, type(outcome))
