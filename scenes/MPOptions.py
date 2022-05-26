@@ -11,17 +11,17 @@ import random
 
 def run(game):
     title = game.fonts["header"].render("Multiplayer", True, (0, 0, 0))
-    create_room_btn = pwb(game.screen, 100, 100, 400, 50,  
+    create_room_btn = pwb(game.screen, 100, 100, 400, 50,
         text='Create a room',
         font=game.fonts["small_text"],
         radius=20,
         onClick=room_game.run,
         onClickParams=(game, None)
-)
+    )
     join_room_filed = TextBox(game.screen, 500, 100, 800, 50, font=game.fonts["small_text"], fontSize=50, textColour=(0, 0, 0),
                   onSubmit=room_game.run, radius=20, borderThickness=5)
-    join_room_filed.onSubmitParams=(game, join_room_filed.getText())
-    matchmaking_btn = pwb(game.screen, 100, 100, 400, 50,  
+
+    matchmaking_btn = pwb(game.screen, 100, 100, 400, 50,
         text='Start matchmaking',
         font=game.fonts["small_text"],
         radius=20,
@@ -59,8 +59,8 @@ def run(game):
                 create_room_btn.setY(int(size_y // 2.5 - (create_room_btn.getHeight() + 50)))
                 matchmaking_btn.setX(int(size_x // 2 - matchmaking_btn.getWidth() // 2))
                 matchmaking_btn.setY(int(join_room_filed.getY() + (join_room_filed.getHeight() + 30)))
-                    
-        
+
+        join_room_filed.onSubmitParams = (game, join_room_filed.getText())
         game.screen.fill(game.colors["main"])
         pygame_widgets.update(events)
         back_btn = Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 400 + size_y // (50 / 3)), (400, 75), "Back ", game_mode)

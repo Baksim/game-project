@@ -14,30 +14,34 @@ def run(game, key):
     wst.daemon = True
     wst.start()
     pygame.time.delay(2000)
+    print(key)
     if key:
-        try:
-            response = ws.join_game(key)
-        except WebSocketConnectionClosedException:
-            pygame.time.delay(2000)
-            response = ws.join_game(key)
-        pygame.time.delay(1000)
-        if response["status"] == "ERROR":
-            start = time.time()
-            title = game.fonts["text"].render("Incorrect room key!!!", True, game.colors["accent"])
-            while time.time() - start < 2:
-                for event in pygame.event.get():
-                    game.event_handler(event)
-                game.screen.fill(game.colors["main"])
-                size_x, size_y = game.screen.get_size()
-                game.screen.blit(title, title.get_rect(center=(size_x/2, size_y/2)))
-                pygame.display.update()
-                return
+        while not ws.is_connected:
+            try:
+                ws.join_game(key)
+            except WebSocketConnectionClosedException:
+                pygame.time.delay(2000)
+                ws.join_game(key)
+            pygame.time.delay(1000)
+            response = ws.last_error
+            if response is not None:
+                ws.last_error = None
+                start = time.time()
+                title = game.fonts["text"].render("Incorrect room key!!!", True, game.colors["accent"])
+                while time.time() - start < 2:
+                    for event in pygame.event.get():
+                        game.event_handler(event)
+                    game.screen.fill(game.colors["main"])
+                    size_x, size_y = game.screen.get_size()
+                    game.screen.blit(title, title.get_rect(center=(size_x/2, size_y/2)))
+                    pygame.display.update()
+                break
     else:
         try:
             ws.init_game()
         except WebSocketConnectionClosedException:
             pygame.time.delay(2000)
-            response = ws.init_game()
+            ws.init_game()
         while ws.join_code is None:
             game.screen.fill(game.colors["main"])
             events = pygame.event.get()
@@ -45,7 +49,7 @@ def run(game, key):
                 game.event_handler(event)
             pygame.display.update()
         title = game.fonts["text"].render("Waiting for opponent.", True, (0, 0, 0))
-        code = game.fonts["title"].render(f"{ws.join_code}", True, (0, 0, 0))
+        code = game.fonts["readable"].render(f"{ws.join_code}", True, (0, 0, 0))
         counter = 0
         while not ws.is_connected:
             game.screen.fill(game.colors["main"])
@@ -64,3 +68,13 @@ def run(game, key):
             game.coursor()
             pygame.display.update()
             counter += 1
+    ws.last_error = None
+    while ws.is_connected:
+        game.screen.fill(game.colors["main"])
+        events = pygame.event.get()
+        for event in events:
+            game.event_handler(event)
+
+        game.coursor()
+        pygame.display.update()
+

@@ -8,7 +8,7 @@
         "C:\\School programming\\test_chess\\resources\\sound\\music\\Pop",
         "False"
     ],
-    "bgm": "True",
+    "bgm": "False",
     "sfx": "True",
     "bgm_volume": 0.11,
     "sfx_volume": 0.25,

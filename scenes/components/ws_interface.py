@@ -14,6 +14,7 @@ class WsInterface:
         self.turn = None
         self.received_moves = []
         self.outcome = None
+        self.last_error = None
         self.ws = WebSocketApp("wss://ws-chess-server.herokuapp.com/", on_message=self.on_message, on_error=self.on_error, on_close=self.on_close, on_open=self.on_open)
         self.session_id = session_id
 
@@ -26,8 +27,6 @@ class WsInterface:
         self.player_color = chess.BLACK
         event = {"type": "init", "join": join, "session_id": self.session_id}
         self.ws.send(json.dumps(event))
-        response = json.loads(self.ws.recv())
-        return response
 
     def match(self):
         event = {"type": "init", "match": "true", "session_id": self.session_id}
@@ -46,6 +45,10 @@ class WsInterface:
         if msg.get('join') is not None:
             self.join_code = msg['join']
             print(self.join_code)
+        elif msg.get('status') is not None:
+            print("poka")
+        elif msg['type'] == 'error':
+            self.last_error = msg['message']
         elif msg['type'] == "assign_color":
             print("Assigned a color")
             self.player_color = msg['color']

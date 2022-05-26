@@ -24,6 +24,7 @@ class Game:
                        "header": pygame.font.Font("./resources/fonts/title.ttf", 50),
                        "btn": pygame.font.Font("./resources/fonts/btn.ttf", 40),
                        "text": pygame.font.Font("./resources/fonts/text.ttf", 30),
+                       "readable": pygame.font.Font("./resources/fonts/readable.ttf", 30),
                        "small_text": pygame.font.Font("./resources/fonts/text.ttf", 25)
                       }
         
