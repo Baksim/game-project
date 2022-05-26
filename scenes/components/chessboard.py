@@ -31,25 +31,27 @@ class CBoard:
         self.pop(x)
     
     def push(self, move):
-        if move in ("00", "e1g1") and self.turn:
-            self._move("h1", "f1")
-            self._move("e1","g1")
-        elif move in ("000", "e1b1") and self.turn:
-            self._move("a1", "c1")
-            self._move("e1","b1")
+        if move in ("00", "e1g1"):
+            if self.board["e"][1][0] == "k":
+                self._move("h1", "f1")
+                self._move("e1","g1")
+        elif move in ("000", "e1c1"):
+            if self.board["e"][1][0] == "k":
+                self._move("a1", "d1")
+                self._move("e1","c1")
         elif move in ("00", "e8g8"):
-            self._move("h8", "f8")
-            self._move("e8","g8")
-        elif move in ("000", "e8b8"):
-            self._move("a8", "c8")
-            self._move("e8","b8")
+            if self.board["e"][1][0] == "k":
+                self._move("h8", "f8")
+                self._move("e8","g8")
+        elif move in ("000", "e8c8"):
+            if self.board["e"][1][0] == "k":
+                self._move("a8", "d8")
+                self._move("e8","c8")
         elif self.board[move[0]][int(move[1])][0] == "p" and move[0] != move[2] and not self.board[move[2]][int(move[3])][0]:
             self._move(move[:2], move[2::])
             self.pop((move[2], move[1]))
         else:
-            self._move(move[:2], move[2::])
-            
-        self.turn = not self.turn
+            self._move(move[:2], move[2::]) 
         
     def is_promotion(self):
         for lett in self.board:
