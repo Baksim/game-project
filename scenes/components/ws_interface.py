@@ -13,7 +13,7 @@ class WsInterface:
     def __init__(self, game, session_id):
         self.game = game
         self.board = chess.Board()
-        self.is_connectd = False
+        self.is_connected = False
         self.player_color = None
         self.join_code = None
         self.turn = None
