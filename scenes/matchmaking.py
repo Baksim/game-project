@@ -1,11 +1,8 @@
-import time
 import chess
 import json
 from pygame.locals import *
-import pygame_widgets
 from websocket import *
 from threading import *
-from multiprocessing import Process
 import pygame.time
 from .components.chessboard import CBoard
 from .components.chessboard_drawer import ChessboardDrawer
@@ -19,7 +16,6 @@ from .components.ws_interface import WsInterface
 #     print("are you not running forever, son?")
 
 def get_let(board, is_white, x, b_keys):
-    print("get_let")
     if pygame.mouse.get_focused() != 0:
         index = (x - board.x) // (board.width // 8)
         if -1 < index < len(b_keys):
@@ -31,7 +27,6 @@ def get_let(board, is_white, x, b_keys):
         return None
 
 def get_num(board, is_white, y):
-    print("get_num")
     if pygame.mouse.get_focused() != 0:
         if board.top <= y <= board.bottom:
             if is_white:
@@ -49,9 +44,13 @@ def run(game):
     wst = Thread(target=ws.ws.run_forever)
     wst.daemon = True
     wst.start()
-    pygame.time.delay(1000)
 
-    ws.match()
+    pygame.time.delay(2000)
+    try:
+        ws.match()
+    except WebSocketConnectionClosedException:
+        pygame.time.delay(2000)
+        ws.match()
 
     while not ws.is_connected:
         game.screen.fill(game.colors["main"])

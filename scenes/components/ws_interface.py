@@ -1,12 +1,7 @@
 import chess
 import json
 import pygame
-import pygame_widgets
-from pygame.locals import *
 from websocket import *
-from .chessboard import CBoard
-from .chessboard_drawer import ChessboardDrawer
-from ..VSAIGame import get_let, get_num
 
 
 class WsInterface:

@@ -92,7 +92,7 @@ class LoginPage(ctk.CTkFrame):
                 response = requests.get('https://flask-chess-server.herokuapp.com/login_api', data=data).json()
                 session = response['session_id']
                 if self.checkbox.get() == "on":
-                    with open('settings\session.json', 'w') as outfile:
+                    with open('settings\\session.json', 'w') as outfile:
                         json.dump(response, outfile, indent=4)
                 go_to_game(controller, session)
             except EmailNotValidError as e:
