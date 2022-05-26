@@ -8,6 +8,7 @@ from pygame_widgets.textbox import TextBox
 import chess
 import chess.engine
                 
+player_move = ""
 
 def get_let(board, is_white, x, b_keys):    
     if pygame.mouse.get_focused() != 0:
@@ -31,6 +32,12 @@ def get_num(board, is_white, y):
         
 
 def run(game, difficulty, is_white):
+    global player_move
+    def set_move(f, nothing):
+        global player_move
+        print(player_move)
+        player_move = move_filed.getText()
+        f.setText("")
     running = True
     engine = game.get_engine()
     cboard = CBoard()
@@ -49,11 +56,21 @@ def run(game, difficulty, is_white):
     player_turn = is_white
     cd = ChessboardDrawer(game, is_white)
     cd.draw(cboard, fields)
-    player_move = ""
+    if eval(game.settings["keyboard_moves"]):
+        move_filed = TextBox(game.screen, 500, 100, 800, 50, font=game.fonts["small_text"], fontSize=50, textColour=(0, 0, 0),
+                  onSubmit=set_move, radius=20, borderThickness=5)
+        move_filed.onSubmitParams=(move_filed, None)
+        size_x, size_y = game.screen.get_size() 
+        move_filed.setWidth(int(size_x // 3))
+        move_filed.setX(int(size_x // 2 - move_filed.getWidth() // 2))
+        move_filed.setY(int(size_y * 0.92))
     
     
     while running:
-        for event in pygame.event.get():
+        game.screen.fill(game.colors["main"])
+        events = pygame.event.get()
+        pygame_widgets.update(events)
+        for event in events:
             let  = get_let(cd.rect, is_white, pygame.mouse.get_pos()[0], list(fields.keys()))
             num = get_num(cd.rect, is_white, pygame.mouse.get_pos()[1])
             game.event_handler(event)
@@ -65,12 +82,13 @@ def run(game, difficulty, is_white):
                     player_move += let + str(num)
             if event.type == VIDEORESIZE or event.type == VIDEOEXPOSE:
                 cd.resize()
-                    
-        game.screen.fill(game.colors["main"])
-        pygame_widgets.update(pygame.event.get())
-        
+                size_x, size_y = game.screen.get_size() 
+                move_filed.setWidth(int(size_x // 3))
+                move_filed.setX(int(size_x // 2 - move_filed.getWidth() // 2))
+                move_filed.setY(int(size_y * 0.92))
+    
         if player_turn:
-            if len(player_move) == 4:
+            if len(player_move) >= 4:
                 player_move = chess.Move.from_uci(player_move)
                 if player_move in board.legal_moves:
                     board.push(player_move)
@@ -88,3 +106,6 @@ def run(game, difficulty, is_white):
         
         game.coursor()
         pygame.display.update()
+    if eval(game.settings["keyboard_moves"]):
+        move_filed.hide()
+        move_filed.disable()

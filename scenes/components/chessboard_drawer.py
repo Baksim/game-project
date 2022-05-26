@@ -13,7 +13,7 @@ class ChessboardDrawer:
         self.is_white = is_white
         
     def reload_imgs(self):
-        self.imgs = self.game.load_images_vsbot(self.rect.width // 8)
+        self.imgs = self.game.load_images(self.rect.width // 8)
         
     def draw_board(self, rects):
         size = self.rect.width // 8
