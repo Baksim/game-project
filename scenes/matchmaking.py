@@ -31,11 +31,13 @@ def run(game):
     wst.start()
     pygame.time.delay(1000)
     while not ws.is_connected:
+        game.screen.fill(game.colors["main"])
         events = pygame.event.get()
         for event in events:
             game.event_handler(event)
-        game.screen.fill(game.colors["main"])
         print("LOADING!!!!!!!!!!!")
+        game.coursor()
+        pygame.display.update()   
         
     ws.match()
     running = True
@@ -44,6 +46,8 @@ def run(game):
         for event in events:
             game.event_handler(event)
         game.screen.fill(game.colors["strong_accent"])
+        game.coursor()
+        pygame.display.update()   
     
 
     print("Matchmaking is loading...")
