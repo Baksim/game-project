@@ -8,9 +8,9 @@
         "C:\\School programming\\test_chess\\resources\\sound\\music\\Pop",
         "False"
     ],
-    "bgm": "False",
+    "bgm": "True",
     "sfx": "True",
-    "bgm_volume": 0.03,
+    "bgm_volume": 0.11,
     "sfx_volume": 0.25,
     "music_style": "J-Pop"
 }

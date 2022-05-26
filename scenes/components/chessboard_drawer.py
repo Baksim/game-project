@@ -5,7 +5,7 @@ class ChessboardDrawer:
         self.game = game
         size_x, size_y = self.game.screen.get_size() 
         self.rect = pygame.Rect((size_x // 2 - (size_y // 2 - int(size_y*0.1)), int(size_y*0.1)), (int(size_y*0.8), int(size_y*0.8)))
-        self.under_rect = pygame.Rect((self.rect.x - 20, self.rect.y - 20), (self.rect.width + 40, self.rect.height + 40))
+        self.under_rect = pygame.Rect((self.rect.x - 20, self.rect.y - 20), (self.rect.width + 45, self.rect.height + 45))
         self.is_white = is_white
         self.imgs = game.load_images(self.rect.width // 8)
         
@@ -41,16 +41,25 @@ class ChessboardDrawer:
                     self.game.screen.blit(self.imgs["w"][board_fields[let][i][0]], rects[let][i - 1].topleft)
                 elif board_fields[let][i][1] == "b":
                     self.game.screen.blit(self.imgs["b"][board_fields[let][i][0]], rects[let][i - 1].topleft)
-    
+                    
+    def draw_symb(self, rects):
+        for i, let in enumerate(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']):
+            let = self.game.fonts["small_text"].render(let, True, (0, 0, 0))
+            num = self.game.fonts["small_text"].render(str(i + 1), True, (0, 0, 0)) if self.is_white else self.game.fonts["small_text"].render(str(8 - i), True, (0, 0, 0))
+            self.game.screen.blit(let, let.get_rect(center=(self.rect.left + self.rect.width //16 + self.rect.width //8 * i, self.rect.bottom + 11)))
+            self.game.screen.blit(num, let.get_rect(center=(self.rect.left - 12, self.rect.bottom - self.rect.width //16 - self.rect.width //8 * i)))
+       
+                
     def resize(self):
         size_x, size_y = self.game.screen.get_size() 
         self.rect = pygame.Rect((size_x // 2 - (size_y // 2 - int(size_y*0.1)), int(size_y*0.1)), (int(size_y*0.8), int(size_y*0.8)))
-        self.under_rect = pygame.Rect((self.rect.x - 20, self.rect.y - 20), (self.rect.width + 40, self.rect.height + 40))
+        self.under_rect = pygame.Rect((self.rect.x - 20, self.rect.y - 20), (self.rect.width + 45, self.rect.height + 45))
         self.reload_imgs()
         
     def draw(self, cboard, rects, picked=None):
         pygame.draw.rect(self.game.screen, self.game.colors["gray"], self.under_rect)
         self.draw_board(rects)
+        self.draw_symb(rects)
         if picked:
             pygame.draw.rect(self.game.screen, self.game.colors["accent"], rects[picked[0]][int(picked[1]) - 1])
         self.draw_pices(cboard, rects)
