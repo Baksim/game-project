@@ -103,17 +103,6 @@ def run(game):
         font=game.fonts["small_text"]
     ),
     Dropdown(
-        game.screen, 120, 10, 170, 80, name=new_settings["keyboard_moves"],
-        choices=[
-            'True',
-            'False'
-        ],
-        borderRadius=3, colour=game.colors["gray"], 
-        values=['True', 'False'], 
-        direction='down', textHAlign='centre',
-        font=game.fonts["small_text"]
-        ),
-    Dropdown(
         game.screen, 120, 10, 170, 80, name=new_settings["bgm"],
         choices=[
             'True',
@@ -196,11 +185,11 @@ def run(game):
         pygame.Rect((size_x // 4, size_y // 10 + 500), (size_x * 3 // 4, 100)),
     ]
          
-        setter_names = ["fullscreen", "resolution", "piece_style", "keyboard_moves",
+        setter_names = ["fullscreen", "resolution", "piece_style",
                         "bgm", "sfx", "bgm_volume", "sfx_volume", "music_style",
                         "custom_path"
                         ]
-        options = ["Fullscreen", "Resolution", "Piece style", "Keyboard moves",
+        options = ["Fullscreen", "Resolution", "Piece style",
                    "Music", "Sounds", "Music Volume", "SFX Volume", "Music Style",
                    "Add music"
                    ]
