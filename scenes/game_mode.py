@@ -12,9 +12,8 @@ def run(game):
         size_x, size_y = game.screen.get_size()
         multiplayer_btn = Button(game, (size_x // 2 - 200, size_y // 2.5 - 50), (400, 100), "Multiplayer", MPOptions)
         btns = [
-                Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 100 + size_y // 50), (400, 100), "Hotseat", hotseat),
-                Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 200 + size_y // 25), (400, 100), "VS AI ", VSAIOptions),
-                Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 300 + size_y // (50 / 3)), (400, 100), "Back ", menu)
+                Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 100 + size_y // 25), (400, 100), "VS AI ", VSAIOptions),
+                Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 200 + size_y // (50 / 3)), (400, 100), "Back ", menu)
                 ]
         title_rect = pygame.Rect((0, size_y // 60), (size_x, size_y // 10))
         pygame.draw.rect(game.screen, game.colors["tertiary"], title_rect)

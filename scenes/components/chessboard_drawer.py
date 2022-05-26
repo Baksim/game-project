@@ -43,8 +43,9 @@ class ChessboardDrawer:
                     self.game.screen.blit(self.imgs["b"][board_fields[let][i][0]], rects[let][i - 1].topleft)
                     
     def draw_symb(self, rects):
-        for i, let in enumerate(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']):
-            let = self.game.fonts["small_text"].render(let, True, (0, 0, 0))
+        lets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+        for i, let in enumerate(lets):
+            let = self.game.fonts["small_text"].render((let if self.is_white else lets[7 - i]), True, (0, 0, 0))
             num = self.game.fonts["small_text"].render(str(i + 1), True, (0, 0, 0)) if self.is_white else self.game.fonts["small_text"].render(str(8 - i), True, (0, 0, 0))
             self.game.screen.blit(let, let.get_rect(center=(self.rect.left + self.rect.width //16 + self.rect.width //8 * i, self.rect.bottom + 11)))
             self.game.screen.blit(num, let.get_rect(center=(self.rect.left - 12, self.rect.bottom - self.rect.width //16 - self.rect.width //8 * i)))

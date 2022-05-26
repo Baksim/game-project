@@ -21,6 +21,7 @@ class CBoard:
         return self.board
     
     def pop(self, coords):
+        
         if self.board[coords[0]][int(coords[1])][0]:
             self.beaten[self.board[coords[0]][int(coords[1])][1]].append(self.board[coords[0]][int(coords[1])])
         self.board[coords[0]][int(coords[1])] = [None, None]

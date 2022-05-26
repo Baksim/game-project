@@ -19,7 +19,6 @@ def get_let(board, is_white, x, b_keys):
                 b_keys.reverse()
                 return b_keys[index]
         return None
-
 def get_num(board, is_white, y): 
     if pygame.mouse.get_focused() != 0:  
         if board.top <= y <= board.bottom:
@@ -28,17 +27,14 @@ def get_num(board, is_white, y):
             else:
                 return (y - board.top) // (board.width // 8) + 1
         return None
-
 def promote_loop(cboard):
     while True:
         print("pls choose a promotion piece")
         p = None
         cboard.promote(p)
-
 def outcome_loop(outcome):
     while True:
         print(f"The outcome is {outcome}")
-
 def run(game, difficulty, is_white):
     player_move = ""
     running = True
@@ -82,28 +78,25 @@ def run(game, difficulty, is_white):
         if player_turn:
             if len(player_move) >= 4:
                 prom = ""
-                player_move = chess.Move.from_uci(player_move + prom)
-                if player_move in board.legal_moves or chess.Move.from_uci(player_move + "q"):
-                    pygame.mixer.Sound.play(game.sound)
+                player_move_new = chess.Move.from_uci(player_move)
+                if player_move_new in board.legal_moves or chess.Move.from_uci(player_move + "q") in board.legal_moves:
+                    cboard.push(player_move)
                     if cboard.is_promotion():
                         prom = cd.get_promotion(cboard, fields)
-                    player_move = chess.Move.from_uci(player_move + prom)
-                    board.push(player_move)
-                    cboard.push(str(player_move)[0:3])
-                    cboard.promote(prom)
+                    player_move_new = chess.Move.from_uci(player_move + prom)
+                    board.push(player_move_new)
                     player_turn = not player_turn
                 player_move = ""
         else:
             result = engine.play(board, chess.engine.Limit(time=0))
-            pygame.mixer.Sound.play(game.sound)
             board.push(result.move)
             cboard.push(str(result.move))
+            if cboard.is_promotion():
+                cboard.promote("q")
             player_turn = not player_turn
-
         cd.draw(cboard, fields, (player_move if len(player_move) == 2 and player_turn else False))
         game.coursor()
         pygame.display.update()
-
         if board.outcome() is not None:
             if board.outcome().winner is not None:
                 winner = board.outcome().winner

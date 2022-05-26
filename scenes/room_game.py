@@ -129,9 +129,18 @@ def run(game, key):
 
         if ws.turn:
             if len(player_move) >= 4:
-                if chess.Move.from_uci(player_move) in ws.board.legal_moves:
-                    ws.send_move(player_move)
-                    ws.turn = not ws.turn
+                prom = ""
+                player_move = chess.Move.from_uci(player_move + prom)
+                if player_move in ws.board.legal_moves or chess.Move.from_uci(player_move + "q"):
+                    pygame.mixer.Sound.play(game.sound)
+                    if cboard.is_promotion():
+                        prom = cd.get_promotion(cboard, fields)
+                    player_move = chess.Move.from_uci(player_move + prom)
+                    ws.board.push(player_move)
+                    print(player_move, str(player_move)[:3])
+                    cboard.push(str(player_move)[:3])
+                    cboard.promote(prom)
+                    player_turn = not player_turn
                 player_move = ""
         if len(ws.received_moves) > 0:
             for i in range(len(ws.received_moves)):
