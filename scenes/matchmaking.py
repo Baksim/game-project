@@ -30,22 +30,39 @@ def run(game):
     wst.daemon = True
     wst.start()
     pygame.time.delay(1000)
+    ws.match()
+    
+    fields = {
+        "a": [None, None, None, None, None, None, None, None],
+        "b": [None, None, None, None, None, None, None, None],
+        "c": [None, None, None, None, None, None, None, None],
+        "d": [None, None, None, None, None, None, None, None],
+        "e": [None, None, None, None, None, None, None, None],
+        "f": [None, None, None, None, None, None, None, None],
+        "g": [None, None, None, None, None, None, None, None],
+        "h": [None, None, None, None, None, None, None, None]
+    }
+    cboard = CBoard()
+    cd = ChessboardDrawer(game, ws.player_color)
+    
     while not ws.is_connected:
         game.screen.fill(game.colors["main"])
         events = pygame.event.get()
         for event in events:
             game.event_handler(event)
-        print("LOADING!!!!!!!!!!!")
+            
         game.coursor()
         pygame.display.update()   
         
-    ws.match()
     running = True
     while running:
+        game.screen.fill(game.colors["main"])
+        cd.draw(cboard, fields)
         events = pygame.event.get()
         for event in events:
             game.event_handler(event)
-        game.screen.fill(game.colors["strong_accent"])
+            if event.type == VIDEORESIZE or event.type == VIDEOEXPOSE:
+                cd.resize()
         game.coursor()
         pygame.display.update()   
     
