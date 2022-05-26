@@ -81,12 +81,13 @@ def run(game, difficulty, is_white):
     
         if player_turn:
             if len(player_move) >= 4:
+                prom = ""
                 if cboard.is_promotion():
-                    promote_loop(cboard)
-                player_move = chess.Move.from_uci(player_move)
+                    prom = cd.get_promotion(cboard, fields)
+                player_move = chess.Move.from_uci(player_move + prom)
                 if player_move in board.legal_moves:
                     board.push(player_move)
-                    cboard.push(str(player_move))
+                    cboard.push(str(player_move)[0:3])
                     player_turn = not player_turn
                 player_move = ""
         else:

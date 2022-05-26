@@ -68,10 +68,10 @@ class ChessboardDrawer:
             self.game.screen.fill(self.game.colors["main"])
             size_x, size_y = self.game.screen.get_size() 
             picks = {
-            "q": pygame.Rect((self.under_rect.x - self.rect.width // 8 - 20, self.rect.top), (int(size_y*0.8), int(size_y*0.8))),
-            "r": pygame.Rect((self.under_rect.x - self.rect.width // 8 - 20, self.rect.top + (self.rect.width // 8)*2), (int(size_y*0.8), int(size_y*0.8))),
-            "b": pygame.Rect((self.under_rect.x - self.rect.width // 8 - 20, self.rect.top + (self.rect.width // 8)*3), (int(size_y*0.8), int(size_y*0.8))),
-            "n": pygame.Rect((self.under_rect.x - self.rect.width // 8 - 20, self.rect.top + (self.rect.width // 8)*4), (int(size_y*0.8), int(size_y*0.8)))
+            "q": pygame.Rect((self.under_rect.x - self.rect.width // 8 - 20, self.rect.top), (int(self.rect.width // 8), int(self.rect.width // 8))),
+            "r": pygame.Rect((self.under_rect.x - self.rect.width // 8 - 20, self.rect.top + (self.rect.width // 8)), (int(self.rect.width // 8), int(self.rect.width // 8))),
+            "b": pygame.Rect((self.under_rect.x - self.rect.width // 8 - 20, self.rect.top + (self.rect.width // 8)*2), (int(self.rect.width // 8), int(self.rect.width // 8))),
+            "n": pygame.Rect((self.under_rect.x - self.rect.width // 8 - 20, self.rect.top + (self.rect.width // 8)*3), (int(self.rect.width // 8), int(self.rect.width // 8)))
             }
             
             for key in picks:
@@ -81,11 +81,12 @@ class ChessboardDrawer:
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     for key in picks:
                         if picks[key].collidepoint(pygame.mouse.get_pos()):
-                            print(key)
                             return key
-                
+            
+            pygame.draw.rect(self.game.screen, self.game.colors["gray"], self.under_rect)  
             self.draw_board(rects)
             self.draw_symb(rects)
             self.draw_pices(cboard, rects)
             
             self.game.coursor()
+            pygame.display.update()
