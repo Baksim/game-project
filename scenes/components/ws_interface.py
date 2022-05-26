@@ -26,6 +26,8 @@ class WsInterface:
         self.player_color = chess.BLACK
         event = {"type": "init", "join": join, "session_id": self.session_id}
         self.ws.send(json.dumps(event))
+        response = json.loads(self.ws.recv())
+        return response
 
     def match(self):
         event = {"type": "init", "match": "true", "session_id": self.session_id}

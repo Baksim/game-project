@@ -8,11 +8,6 @@ from pygame_widgets.textbox import TextBox
 from pygame_widgets.button import Button as pwb
 import random
 
-def start_room(game, key=None):
-    print("Room is loading...")
-    
-def start_matchmaking(game, what):
-    matchmaking.run(game)
 
 def run(game):
     title = game.fonts["header"].render("Multiplayer", True, (0, 0, 0))
@@ -20,17 +15,18 @@ def run(game):
         text='Create a room',
         font=game.fonts["small_text"],
         radius=20,
-        onClick=start_room,
-        onClickParams=(game, True)
+        onClick=room_game.run,
+        onClickParams=(game, None)
 )
     join_room_filed = TextBox(game.screen, 500, 100, 800, 50, font=game.fonts["small_text"], fontSize=50, textColour=(0, 0, 0),
-                  onSubmit=start_room, onSubmitParams=(game, True), radius=20, borderThickness=5)
+                  onSubmit=room_game.run, radius=20, borderThickness=5)
+    join_room_filed.onSubmitParams=(game, join_room_filed.getText())
     matchmaking_btn = pwb(game.screen, 100, 100, 400, 50,  
         text='Start matchmaking',
         font=game.fonts["small_text"],
         radius=20,
-        onClick=start_matchmaking,
-        onClickParams=(game, True))
+        onClick=matchmaking.run,
+        onClickParams=game)
     
     room_text = game.fonts["text"].render("Enter room's id to join:", True, (0, 0, 0))
     size_x, size_y = game.screen.get_size()
