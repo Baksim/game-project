@@ -29,7 +29,6 @@ class WsInterface:
 
     def match(self):
         event = {"type": "init", "match": "true", "session_id": self.session_id}
-        print("hello???", event)
         self.ws.send(json.dumps(event))
 
     def on_click_join(self):
@@ -75,7 +74,6 @@ class WsInterface:
             print("Lol draw")
             self.ws.close()
         print("Received:" + message)
-        pygame.display.update()
 
     def on_error(self, ws, error):
         print(error)

@@ -109,6 +109,4 @@ def run(game):
         game.coursor()
         pygame.display.update()
 
-    print("Matchmaking is loading...")
-
 

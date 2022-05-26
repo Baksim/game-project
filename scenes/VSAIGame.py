@@ -94,6 +94,7 @@ def run(game, difficulty, is_white):
                 player_move = ""
                 
         else:
+            pygame.time.delay(700)
             result = engine.play(board, chess.engine.Limit(time=0))
             board.push(result.move)
             cboard.push(str(result.move))

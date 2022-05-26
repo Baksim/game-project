@@ -73,7 +73,7 @@ class LoginPage(ctk.CTkFrame):
         self.email = ctk.CTkEntry(self, placeholder_text="Email")
         self.email.grid(row=2, column=1)
         ctk.CTkLabel(self, text="Password: ").grid(row=3, column=0)
-        self.pswd = ctk.CTkEntry(self, placeholder_text="Password")
+        self.pswd = ctk.CTkEntry(self, placeholder_text="Password", show="*")
         self.pswd.grid(row=3, column=1, sticky='e')
         submit = ctk.CTkButton(self, text="Submit", command=lambda: self.login(controller), width=50)
         submit.grid(row=4, column=0, columnspan=2, pady=10, sticky='ew')
@@ -89,12 +89,15 @@ class LoginPage(ctk.CTkFrame):
         if data.get('email') != '' and data.get('password') != '':
             try:
                 data['email'] = validate_email(data['email']).email
-                response = requests.get('https://flask-chess-server.herokuapp.com/login_api', data=data).json()
-                session = response['session_id']
-                if self.checkbox.get() == "on":
-                    with open('settings\\session.json', 'w') as outfile:
-                        json.dump(response, outfile, indent=4)
-                go_to_game(controller, session)
+                response = requests.get('https://flask-chess-server.herokuapp.com/login_api', data=data)
+                if response.ok:
+                    session = response.json()['session_id']
+                    if self.checkbox.get() == "on":
+                        with open('settings\\session.json', 'w') as outfile:
+                            json.dump(response.json(), outfile, indent=4)
+                    go_to_game(controller, session)
+                else:
+                    self.warning.config(text="Incorrect email or password!")
             except EmailNotValidError as e:
                 self.warning.config(text="Invalid email address.")
         else:
@@ -115,10 +118,10 @@ class RegisterPage(ctk.CTkFrame):
         self.email = ctk.CTkEntry(self, placeholder_text="Email")
         self.email.grid(row=3, column=1)
         ctk.CTkLabel(self, text="Password: ").grid(row=4, column=0)
-        self.pswd = ctk.CTkEntry(self, placeholder_text="Password")
+        self.pswd = ctk.CTkEntry(self, placeholder_text="Password", show="*")
         self.pswd.grid(row=4, column=1, sticky='e')
         ctk.CTkLabel(self, text="Confirm password: ").grid(row=5, column=0)
-        self.cnpswd = ctk.CTkEntry(self, placeholder_text="Confirm password")
+        self.cnpswd = ctk.CTkEntry(self, placeholder_text="Confirm password", show="*")
         self.cnpswd.grid(row=5, column=1, sticky='e')
         self.submit = ctk.CTkButton(self, text="Submit", command=lambda: self.register())
         self.submit.grid(row=6, column=0, columnspan=2, sticky='ew', padx=50, pady=7)
