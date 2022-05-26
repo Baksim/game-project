@@ -4,6 +4,7 @@ import json
 import tkinter
 import tkinter.font as tkFont
 import customtkinter
+from threading import *
 
 
 def main():
@@ -21,4 +22,5 @@ def main():
             g.run()
     
 if __name__ == "__main__":
-    main()
+    t = Thread(target=main)
+    t.start()

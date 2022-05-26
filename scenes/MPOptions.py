@@ -12,7 +12,7 @@ def start_room(game, key=None):
     print("Room is loading...")
     
 def start_matchmaking(game, what):
-    print("Matcmking is loading...")
+    matchmaking.run(game)
 
 def run(game):
     title = game.fonts["header"].render("Multiplayer", True, (0, 0, 0))
