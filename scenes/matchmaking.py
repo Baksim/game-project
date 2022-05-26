@@ -57,14 +57,24 @@ def run(game):
         pygame.time.delay(2000)
         ws.match()
 
+    title = game.fonts["text"].render("Waiting for opponent.", True, (0, 0, 0))
+    counter = 0
     while not ws.is_connected:
         game.screen.fill(game.colors["main"])
         events = pygame.event.get()
         for event in events:
             game.event_handler(event)
-
+        if counter // 1000 == counter / 1000:
+            title = game.fonts["text"].render("Waiting for opponent.", True, (0, 0, 0))
+        if counter // 2000 == counter / 2000:
+            title = game.fonts["text"].render("Waiting for opponent...", True, (0, 0, 0))
+        if counter // 3000 == counter / 3000:
+            title = game.fonts["text"].render("Waiting for opponent.....", True, (0, 0, 0))
+        size_x, size_y = game.screen.get_size()
+        game.screen.blit(title, title.get_rect(center=(size_x / 2, size_y / 2)))
         game.coursor()
         pygame.display.update()
+        counter += 1
 
     player_move = ""
     fields = {
@@ -99,7 +109,12 @@ def run(game):
 
         if ws.turn:
             if len(player_move) >= 4:
+                prom = ""
+                if cboard.is_promotion():
+                    prom = cd.get_promotion(cboard, fields)
+                player_move = player_move + prom
                 if chess.Move.from_uci(player_move) in ws.board.legal_moves:
+                    cboard.promote(prom)
                     ws.send_move(player_move)
                     ws.turn = not ws.turn
                 player_move = ""
