@@ -110,13 +110,14 @@ def run(game):
         if ws.turn:
             if len(player_move) >= 4:
                 prom = ""
-                if cboard.is_promotion():
-                    prom = cd.get_promotion(cboard, fields)
                 player_move = player_move + prom
-                if chess.Move.from_uci(player_move) in ws.board.legal_moves:
-                    cboard.promote(prom)
+                if chess.Move.from_uci(player_move) in ws.board.legal_moves or chess.Move.from_uci(player_move + "q"):
+                    if cboard.is_promotion():
+                        prom = cd.get_promotion(cboard, fields)
+                    player_move = player_move + prom
                     ws.send_move(player_move)
                     ws.turn = not ws.turn
+                    cboard.promote(prom)
                 player_move = ""
         if len(ws.received_moves) > 0:
             for i in range(len(ws.received_moves)):
