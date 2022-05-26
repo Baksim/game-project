@@ -53,6 +53,7 @@ class Game:
         }
         
         self.music_list = []
+        self.sound = pygame.mixer.Sound("resources\\sound\\sound.wav")
         
     def run(self):
         splash_screen.run(self)
