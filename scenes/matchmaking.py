@@ -30,7 +30,15 @@ def run(game):
     wst.daemon = True
     wst.start()
     pygame.time.delay(1000)
+    while not ws.is_connected:
+        game.screen.fill(game.colors["main"])
+        print("LOADING!!!!!!!!!!!")
+        
     ws.match()
+    running = True
+    while running:
+        game.screen.fill(game.colors["strong_accent"])
+    
 
     print("Matchmaking is loading...")
 

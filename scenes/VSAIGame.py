@@ -7,8 +7,7 @@ import pygame_widgets
 from pygame_widgets.textbox import TextBox
 import chess
 import chess.engine
-                
-player_move = ""
+            
 
 def get_let(board, is_white, x, b_keys):    
     if pygame.mouse.get_focused() != 0:
@@ -32,10 +31,8 @@ def get_num(board, is_white, y):
         
 
 def run(game, difficulty, is_white):
-    global player_move
-    def set_move(f, nothing):
-        global player_move
-        print(player_move)
+    player_move = ""
+    def set_move(f, player_move):
         player_move = move_filed.getText()
         f.setText("")
     running = True
@@ -59,7 +56,7 @@ def run(game, difficulty, is_white):
     if eval(game.settings["keyboard_moves"]):
         move_filed = TextBox(game.screen, 500, 100, 800, 50, font=game.fonts["small_text"], fontSize=50, textColour=(0, 0, 0),
                   onSubmit=set_move, radius=20, borderThickness=5)
-        move_filed.onSubmitParams=(move_filed, None)
+        move_filed.onSubmitParams=(move_filed, player_move)
         size_x, size_y = game.screen.get_size() 
         move_filed.setWidth(int(size_x // 3))
         move_filed.setX(int(size_x // 2 - move_filed.getWidth() // 2))
