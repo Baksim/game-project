@@ -42,9 +42,6 @@ def outcome_loop(outcome):
 
 def run(game, difficulty, is_white):
     player_move = ""
-    def set_move(f, player_move):
-        player_move = move_filed.getText()
-        f.setText("")
     running = True
     engine = game.get_engine()
     cboard = CBoard()
@@ -63,14 +60,6 @@ def run(game, difficulty, is_white):
     player_turn = is_white
     cd = ChessboardDrawer(game, is_white)
     cd.draw(cboard, fields)
-    if eval(game.settings["keyboard_moves"]):
-        move_filed = TextBox(game.screen, 500, 100, 800, 50, font=game.fonts["small_text"], fontSize=50, textColour=(0, 0, 0),
-                  onSubmit=set_move, radius=20, borderThickness=5)
-        move_filed.onSubmitParams=(move_filed, player_move)
-        size_x, size_y = game.screen.get_size() 
-        move_filed.setWidth(int(size_x // 3))
-        move_filed.setX(int(size_x // 2 - move_filed.getWidth() // 2))
-        move_filed.setY(int(size_y * 0.92))
     winner = None
     outcome = None
     
@@ -90,10 +79,6 @@ def run(game, difficulty, is_white):
                     player_move += let + str(num)
             if event.type == VIDEORESIZE or event.type == VIDEOEXPOSE:
                 cd.resize()
-                size_x, size_y = game.screen.get_size() 
-                move_filed.setWidth(int(size_x // 3))
-                move_filed.setX(int(size_x // 2 - move_filed.getWidth() // 2))
-                move_filed.setY(int(size_y * 0.92))
     
         if player_turn:
             if len(player_move) >= 4:
@@ -126,8 +111,3 @@ def run(game, difficulty, is_white):
                 outcome = "draw"
             running = False
             outcome_loop(outcome)
-
-
-    if eval(game.settings["keyboard_moves"]):
-        move_filed.hide()
-        move_filed.disable()
