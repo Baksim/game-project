@@ -86,12 +86,15 @@ def run(game, difficulty, is_white):
                     prom = cd.get_promotion(cboard, fields)
                 player_move = chess.Move.from_uci(player_move + prom)
                 if player_move in board.legal_moves:
+                    pygame.mixer.Sound.play(game.sound)
                     board.push(player_move)
                     cboard.push(str(player_move)[0:3])
+                    cboard.promote(prom)
                     player_turn = not player_turn
                 player_move = ""
         else:
             result = engine.play(board, chess.engine.Limit(time=0))
+            pygame.mixer.Sound.play(game.sound)
             board.push(result.move)
             cboard.push(str(result.move))
             player_turn = not player_turn
