@@ -35,6 +35,10 @@ def get_num(board, is_white, y):
                 return (y - board.top) // (board.width // 8) + 1
         return None
 
+def outcome_loop(outcome):
+    while True:
+        print(f"The outcome is {outcome}")
+
 def run(game):
     session_id = game.session_id
     enableTrace(True)
@@ -108,5 +112,18 @@ def run(game):
         cd.draw(cboard, fields, (player_move if len(player_move) == 2 and ws.turn else False))
         game.coursor()
         pygame.display.update()
+        if ws.outcome is not None:
+            print("Hello??")
+            if ws.outcome[0] == "win":
+                winner = ws.outcome[1]
+                if (ws.player_color and winner) or (not ws.player_color and not winner):
+                    outcome = "win"
+                else:
+                    outcome = "lose"
+            else:
+                outcome = "draw"
+            running = False
+            outcome_loop(outcome)
+
 
 
