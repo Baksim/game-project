@@ -28,7 +28,17 @@ def get_num(board, is_white, y):
             else:
                 return (y - board.top) // (board.width // 8) + 1
         return None
-        
+
+def promote_loop(cboard):
+    while True:
+        print("pls choose a promotion piece")
+        p = None
+        cboard.promote(p)
+
+
+def outcome_loop(outcome):
+    while True:
+        print(f"The outcome is {outcome}")
 
 def run(game, difficulty, is_white):
     player_move = ""
@@ -61,7 +71,8 @@ def run(game, difficulty, is_white):
         move_filed.setWidth(int(size_x // 3))
         move_filed.setX(int(size_x // 2 - move_filed.getWidth() // 2))
         move_filed.setY(int(size_y * 0.92))
-    
+    winner = None
+    outcome = None
     
     while running:
         game.screen.fill(game.colors["main"])
@@ -86,24 +97,37 @@ def run(game, difficulty, is_white):
     
         if player_turn:
             if len(player_move) >= 4:
+                if cboard.is_promotion():
+                    promote_loop(cboard)
                 player_move = chess.Move.from_uci(player_move)
                 if player_move in board.legal_moves:
                     board.push(player_move)
                     cboard.push(str(player_move))
                     player_turn = not player_turn
                 player_move = ""
-                
         else:
-            pygame.time.delay(700)
             result = engine.play(board, chess.engine.Limit(time=0))
             board.push(result.move)
             cboard.push(str(result.move))
             player_turn = not player_turn
-            
+
         cd.draw(cboard, fields, (player_move if len(player_move) == 2 and player_turn else False))
-        
         game.coursor()
         pygame.display.update()
+
+        if board.outcome() is not None:
+            if board.outcome().winner is not None:
+                winner = board.outcome().winner
+                if (is_white and winner) or (not is_white and not winner):
+                    outcome = "win"
+                else:
+                    outcome = "lose"
+            else:
+                outcome = "draw"
+            running = False
+            outcome_loop(outcome)
+
+
     if eval(game.settings["keyboard_moves"]):
         move_filed.hide()
         move_filed.disable()
