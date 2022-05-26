@@ -115,7 +115,7 @@ class Game:
             self.play_music(new_settings)
         self.settings = new_settings.copy()
         if save:
-            with open("settings\settings.json", 'w') as f:
+            with open('settings\settings.json', 'w') as f:
                 json.dump(self.settings, f, indent=4)
                 
     def get_engine(self):
@@ -138,7 +138,10 @@ class Game:
         
         return imgs
             
-            
+    def logout(self):
+        self.session_id = "Guest"
+        with open('settings\\session.json', 'w') as f:
+            json.dump({"session_id": ""}, f, indent=4)
     def coursor(self):
         CURSOR = pygame.image.load('resources\images\cursor.png').convert_alpha()
         if pygame.mouse.get_focused() != 0:

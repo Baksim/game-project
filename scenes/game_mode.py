@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 from .components.button import Button
-from . import settings, menu, VSAIOptions
+from . import settings, menu, VSAIOptions, MPOptions
 
       
 def run(game):
@@ -10,7 +10,8 @@ def run(game):
     while running:
         game.screen.fill(game.colors["main"])
         size_x, size_y = game.screen.get_size()
-        btns = [Button(game, (size_x // 2 - 200, size_y // 2.5 - 50), (400, 100), "Multiplayer", settings),
+        multiplayer_btn = Button(game, (size_x // 2 - 200, size_y // 2.5 - 50), (400, 100), "Multiplayer", MPOptions)
+        btns = [
                 Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 100 + size_y // 50), (400, 100), "Hotseat", settings),
                 Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 200 + size_y // 25), (400, 100), "VS AI ", VSAIOptions),
                 Button(game, (size_x // 2 - 200, (size_y // 2.5 - 50) + 300 + size_y // (50 / 3)), (400, 100), "Back ", menu)
@@ -21,7 +22,9 @@ def run(game):
         game.screen.blit(title, title.get_rect(center=(title_rect.center)))
         for btn in btns:
             btn.draw()
-        game.coursor()
+        if game.session_id != "Guest":
+            multiplayer_btn.draw()
+        
         for event in pygame.event.get():
             game.event_handler(event)
             if event.type == pygame.KEYDOWN:
@@ -31,4 +34,15 @@ def run(game):
                 pos = pygame.mouse.get_pos()
                 for btn in btns:
                     btn.redirect(pos)
+                if game.session_id != "Guest":
+                    multiplayer_btn.redirect(pos)
+                    
+        if game.session_id == "Guest":
+            size_x, size_y = game.screen.get_size()
+            pos = pygame.mouse.get_pos()
+            pygame.draw.rect(game.screen, game.colors["button_border"], multiplayer_btn.second_rect, 0, 10)
+            pygame.draw.rect(game.screen, game.colors["button_bg"], multiplayer_btn.rect, 0, 10)
+            text = game.fonts["btn"].render(multiplayer_btn.text, True, game.colors["gray"])
+            game.screen.blit(text, text.get_rect(center=(multiplayer_btn.rect.center)))
+        game.coursor()
         pygame.display.update()    
