@@ -31,19 +31,19 @@ class CBoard:
         self.pop(x)
     
     def push(self, move):
-        if move in ("00", "e1g1"):
+        if move in ("e1h1", "e1g1"):
             if self.board["e"][1][0] == "k":
                 self._move("h1", "f1")
                 self._move("e1","g1")
-        elif move in ("000", "e1c1"):
+        elif move in ("e1a1", "e1c1"):
             if self.board["e"][1][0] == "k":
                 self._move("a1", "d1")
                 self._move("e1","c1")
-        elif move in ("00", "e8g8"):
+        elif move in ("e8h8", "e8g8"):
             if self.board["e"][1][0] == "k":
                 self._move("h8", "f8")
                 self._move("e8","g8")
-        elif move in ("000", "e8c8"):
+        elif move in ("e8a8", "e8c8"):
             if self.board["e"][1][0] == "k":
                 self._move("a8", "d8")
                 self._move("e8","c8")
