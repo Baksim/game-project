@@ -17,6 +17,8 @@ class WsInterface:
         self.player_color = None
         self.join_code = None
         self.turn = None
+        self.received_moves = []
+        self.won = False
         self.ws = WebSocketApp("wss://ws-chess-server.herokuapp.com/", on_message=self.on_message, on_error=self.on_error, on_close=self.on_close, on_open=self.on_open)
         self.session_id = session_id
 
@@ -64,8 +66,7 @@ class WsInterface:
         elif msg['type'] == "announcement":
             self.is_connected = True
         elif msg['type'] == "play":
-            move = chess.Move.from_uci(msg['code'])
-            self.board.push(move)
+            self.received_moves.append([msg['code'], msg['color']])
             # brd.configure(text=board)
             # if msg['color'] == player_color:
             #     p_btn.configure(state="active")
