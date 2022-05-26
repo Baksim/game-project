@@ -19,7 +19,10 @@ class Game:
             self.screen = pygame.display.set_mode(tuple(map(int, settings["resolution"].split(', '))), pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((1300, 950), pygame.RESIZABLE)
-        
+
+        if self.session_id != "Guest":
+            pass
+
         self.fonts = { "title": pygame.font.Font("./resources/fonts/title.ttf", 60),
                        "header": pygame.font.Font("./resources/fonts/title.ttf", 50),
                        "btn": pygame.font.Font("./resources/fonts/btn.ttf", 40),

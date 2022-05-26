@@ -7,6 +7,7 @@ import pygame_widgets
 from pygame_widgets.textbox import TextBox
 import chess
 import chess.engine
+from .components.result_log import show
 
 def get_let(board, is_white, x, b_keys):    
     if pygame.mouse.get_focused() != 0:
@@ -108,4 +109,4 @@ def run(game, difficulty, is_white):
             else:
                 outcome = "draw"
             running = False
-            outcome_loop(outcome)
+            show(game, outcome, ["Hello", "World"], [1200, 1000])

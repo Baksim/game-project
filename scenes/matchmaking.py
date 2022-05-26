@@ -7,6 +7,7 @@ import pygame.time
 from .components.chessboard import CBoard
 from .components.chessboard_drawer import ChessboardDrawer
 from .components.ws_interface import WsInterface
+from .components.result_log import show
 
 # def connection(game, session_id):
 #     enableTrace(True)
@@ -113,6 +114,7 @@ def run(game):
         game.coursor()
         pygame.display.update()
         if ws.outcome is not None:
+            outcome = None
             print("Hello??")
             if ws.outcome[0] == "win":
                 winner = ws.outcome[1]
@@ -123,7 +125,9 @@ def run(game):
             else:
                 outcome = "draw"
             running = False
-            outcome_loop(outcome)
+            print(ws.outcome)
+            print(outcome, type(outcome))
+            show(game, str(outcome), ["Hello", "World"], [1200, 1000])
 
 
 

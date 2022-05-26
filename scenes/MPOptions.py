@@ -26,7 +26,7 @@ def run(game):
         font=game.fonts["small_text"],
         radius=20,
         onClick=matchmaking.run,
-        onClickParams=game)
+        onClickParams=[game])
     
     room_text = game.fonts["text"].render("Enter room's id to join:", True, (0, 0, 0))
     size_x, size_y = game.screen.get_size()
