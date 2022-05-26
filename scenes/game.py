@@ -3,7 +3,7 @@ from pygame.locals import *
 import sys
 from . import splash_screen
 import json
-
+import requests
 
 class Game:
     def __init__(self, settings, session):
@@ -20,8 +20,13 @@ class Game:
         else:
             self.screen = pygame.display.set_mode((1300, 950), pygame.RESIZABLE)
 
+        self.user = None
+        self.opponent = None
         if self.session_id != "Guest":
-            pass
+            response = requests.get("https://flask-chess-server.herokuapp.com/get_user_info", data={"session_id": self.session_id})
+            if response.ok:
+                self.user = response.json()
+
 
         self.fonts = { "title": pygame.font.Font("./resources/fonts/title.ttf", 60),
                        "header": pygame.font.Font("./resources/fonts/title.ttf", 50),

@@ -48,7 +48,6 @@ class AuthApp(ctk.CTk):
 
 
 class StartPage(ctk.CTkFrame):
-
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
         self.controller = controller

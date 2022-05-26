@@ -2,7 +2,7 @@ import chess
 import json
 import pygame
 from websocket import *
-
+import requests
 
 class WsInterface:
     def __init__(self, game, session_id):
@@ -55,6 +55,17 @@ class WsInterface:
             self.turn = self.player_color
         elif msg['type'] == "announcement":
             self.is_connected = True
+            opponent_id = None
+            if msg['player1'] == self.session_id:
+                opponent_id = msg['player2']
+            else:
+                opponent_id = msg['player1']
+            response = requests.get("https://flask-chess-server.herokuapp.com/get_user_info",
+                                    data={"session_id": opponent_id})
+            if response.ok:
+                self.game.opponent = response.json()
+            print(self.game.opponent)
+            print(self.game.user)
         elif msg['type'] == "play":
             self.received_moves.append([msg['code'], msg['color']])
         elif msg['type'] == "win":

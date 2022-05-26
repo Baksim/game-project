@@ -127,7 +127,7 @@ def run(game):
             running = False
             print(ws.outcome)
             print(outcome, type(outcome))
-            show(game, str(outcome), ["Hello", "World"], [1200, 1000])
+            show(game, str(outcome), [game.user["username"], game.opponent["username"]], [game.user["score"], game.opponent["score"]])
 
 
 
