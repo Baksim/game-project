@@ -35,7 +35,6 @@ def promote_loop(cboard):
         p = None
         cboard.promote(p)
 
-
 def outcome_loop(outcome):
     while True:
         print(f"The outcome is {outcome}")
