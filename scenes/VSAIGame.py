@@ -7,35 +7,8 @@ import pygame_widgets
 from pygame_widgets.textbox import TextBox
 import chess
 import chess.engine
-
-
-def draw_board(game, rec, rects, is_white):
-    size = rec.width // 8
-    color = is_white
-    for i, let in enumerate(rects):
-        for j in range(8):
-            if is_white:
-                rects[let][j] = pygame.Rect(rec.x + size * i, rec.bottom - size * (j + 1), size, size)
-            else:
-                rects[let][j] = pygame.Rect(rec.right - size * (i + 1), rec.top + size * j, size, size)
-    for let in rects:
-        for i in range(8):
-            if color:
-                pygame.draw.rect(game.screen, "#6D2900", rects[let][i])
-            else:
-                pygame.draw.rect(game.screen, "#E1B494", rects[let][i])
-            color = not color
-        color = not color
-    
-def draw_pices(game, cboard, rects, imgs):
-    board_fields = cboard.get_board()
-    for let in board_fields:
-        for i in range(1, 9):
-            if board_fields[let][i][1] == "w":
-                game.screen.blit(imgs["w"][board_fields[let][i][0]], rects[let][i - 1].topleft)
-            elif board_fields[let][i][1] == "b":
-                game.screen.blit(imgs["b"][board_fields[let][i][0]], rects[let][i - 1].topleft)
                 
+player_move = ""
 
 def get_let(board, is_white, x, b_keys):    
     if pygame.mouse.get_focused() != 0:
@@ -59,11 +32,16 @@ def get_num(board, is_white, y):
         
 
 def run(game, difficulty, is_white):
+    global player_move
+    def set_move(f, nothing):
+        global player_move
+        print(player_move)
+        player_move = move_filed.getText()
+        f.setText("")
     running = True
     engine = game.get_engine()
     cboard = CBoard()
     board = chess.Board()
-    size_x, size_y = game.screen.get_size()
     fields = {
         "a": [None, None, None, None, None, None, None, None],
         "b": [None, None, None, None, None, None, None, None],
@@ -76,18 +54,25 @@ def run(game, difficulty, is_white):
     }
     engine.configure({"Skill Level": difficulty})
     player_turn = is_white
-    board_rect = pygame.Rect((size_x // 2 - (size_y // 2 - int(size_y*0.1)), int(size_y*0.1)), (int(size_y*0.8), int(size_y*0.8)))
-    under_board_rect = pygame.Rect((board_rect.x - 20, board_rect.y - 20), (board_rect.width + 40, board_rect.height + 40))
-    cd = ChessboardDrawer(game, board_rect, is_white)
-    cd.draw_board(fields)
-    cd.draw_pices(cboard, fields)
-    player_move = ""
+    cd = ChessboardDrawer(game, is_white)
+    cd.draw(cboard, fields)
+    if eval(game.settings["keyboard_moves"]):
+        move_filed = TextBox(game.screen, 500, 100, 800, 50, font=game.fonts["small_text"], fontSize=50, textColour=(0, 0, 0),
+                  onSubmit=set_move, radius=20, borderThickness=5)
+        move_filed.onSubmitParams=(move_filed, None)
+        size_x, size_y = game.screen.get_size() 
+        move_filed.setWidth(int(size_x // 3))
+        move_filed.setX(int(size_x // 2 - move_filed.getWidth() // 2))
+        move_filed.setY(int(size_y * 0.92))
     
     
     while running:
-        for event in pygame.event.get():
-            let  = get_let(board_rect, is_white, pygame.mouse.get_pos()[0], list(fields.keys()))
-            num = get_num(board_rect, is_white, pygame.mouse.get_pos()[1])
+        game.screen.fill(game.colors["main"])
+        events = pygame.event.get()
+        pygame_widgets.update(events)
+        for event in events:
+            let  = get_let(cd.rect, is_white, pygame.mouse.get_pos()[0], list(fields.keys()))
+            num = get_num(cd.rect, is_white, pygame.mouse.get_pos()[1])
             game.event_handler(event)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
@@ -96,17 +81,14 @@ def run(game, difficulty, is_white):
                 if let and num and (let + str(num) != player_move) and player_turn:
                     player_move += let + str(num)
             if event.type == VIDEORESIZE or event.type == VIDEOEXPOSE:
+                cd.resize()
                 size_x, size_y = game.screen.get_size() 
-                board_rect = pygame.Rect((size_x // 2 - (size_y // 2 - int(size_y*0.1)), int(size_y*0.1)), (int(size_y*0.8), int(size_y*0.8)))
-                under_board_rect = pygame.Rect((board_rect.x - 20, board_rect.y - 20), (board_rect.width + 40, board_rect.height + 40))
-                cd.set_rect(board_rect)
-                    
-        game.screen.fill(game.colors["main"])
-        pygame.draw.rect(game.screen, game.colors["gray"], under_board_rect)
-        pygame_widgets.update(pygame.event.get())
-        
+                move_filed.setWidth(int(size_x // 3))
+                move_filed.setX(int(size_x // 2 - move_filed.getWidth() // 2))
+                move_filed.setY(int(size_y * 0.92))
+    
         if player_turn:
-            if len(player_move) == 4:
+            if len(player_move) >= 4:
                 player_move = chess.Move.from_uci(player_move)
                 if player_move in board.legal_moves:
                     board.push(player_move)
@@ -120,10 +102,10 @@ def run(game, difficulty, is_white):
             cboard.push(str(result.move))
             player_turn = not player_turn
             
-        cd.draw_board(fields)
-        if len(player_move) == 2 and player_turn:
-            pygame.draw.rect(game.screen, game.colors["accent"], fields[player_move[0]][int(player_move[1]) - 1])
-        cd.draw_pices(cboard, fields)
+        cd.draw(cboard, fields, (player_move if len(player_move) == 2 and player_turn else False))
         
         game.coursor()
         pygame.display.update()
+    if eval(game.settings["keyboard_moves"]):
+        move_filed.hide()
+        move_filed.disable()

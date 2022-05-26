@@ -129,7 +129,7 @@ class Game:
         byte_io = io.BytesIO(new_bites)
         return pygame.image.load(byte_io)
     
-    def load_images_vsbot(self, size):
+    def load_images(self, size):
         from os import listdir, path
         imgs = {"w": {}, "b": {}}
         for f in listdir("resources\\images\\pieces\\white\\" + self.settings["piece_style"]):
