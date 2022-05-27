@@ -86,19 +86,14 @@ def run(game):
                 cd.resize() 
         if ws.turn:
             if len(player_move) >= 4:
-                if chess.Move.from_uci(player_move) in ws.board.legal_moves or chess.Move.from_uci(player_move + "q") in ws.board.legal_moves:
+                if chess.Move.from_uci(player_move) in ws.board.legal_moves:
                     ws.send_move(player_move)
                     ws.turn = not ws.turn
-                    pygame.mixer.Sound.play(game.sound)
                 player_move = ""
         if len(ws.received_moves) > 0:
             for i in range(len(ws.received_moves)):
-                prom = ""
                 cboard.push(str(chess.Move.from_uci(ws.received_moves[i][0])))
-                if cboard.is_promotion():
-                    cboard.promote(prom)
-                    prom = "q"
-                ws.board.push(chess.Move.from_uci(ws.received_moves[i][0] + prom))
+                ws.board.push(chess.Move.from_uci(ws.received_moves[i][0]))
                 
                 if ws.received_moves[i][1] == ws.player_color:
                     ws.turn = True
