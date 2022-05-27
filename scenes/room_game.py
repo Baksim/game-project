@@ -96,7 +96,6 @@ def run(game, key):
             pygame.display.update()
             counter += 1
     ws.last_error = None
-
     player_move = ""
     fields = {
         "a": [None, None, None, None, None, None, None, None],
@@ -135,7 +134,10 @@ def run(game, key):
                     if cboard.is_promotion():
                         player_move_new = chess.Move.from_uci(player_move + "q")
                     ws.board.push(player_move_new)
-                    player_turn = not player_turn
+                    cboard.promote("q")
+                    ws.send_move(player_move_new)
+                    ws.turn = not ws.turn
+                    pygame.mixer.Sound.play(game.sound)
                 player_move = ""
         if len(ws.received_moves) > 0:
             for i in range(len(ws.received_moves)):
@@ -144,6 +146,8 @@ def run(game, key):
                 if ws.received_moves[i][1] == ws.player_color:
                     ws.turn = True
                 del ws.received_moves[i]
+                pygame.mixer.Sound.play(game.sound)
+                cboard.promote("q")
         cd.draw(cboard, fields, (player_move if len(player_move) == 2 and ws.turn else False))
         game.coursor()
         pygame.display.update()

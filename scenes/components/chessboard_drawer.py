@@ -64,7 +64,7 @@ class ChessboardDrawer:
             pygame.draw.rect(self.game.screen, self.game.colors["accent"], rects[picked[0]][int(picked[1]) - 1])
         self.draw_pices(cboard, rects)
         
-    def get_promotion(self, cboard, rects):
+    """def get_promotion(self, cboard, rects):
         while True:
             self.game.screen.fill(self.game.colors["main"])
             size_x, size_y = self.game.screen.get_size() 
@@ -90,4 +90,4 @@ class ChessboardDrawer:
             self.draw_pices(cboard, rects)
             
             self.game.coursor()
-            pygame.display.update()
+            pygame.display.update()"""
