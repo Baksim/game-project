@@ -1,6 +1,5 @@
 .vs
 .vscode
-*.mp3
 .idea
 __pycache__
 settings/session.json
